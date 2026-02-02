@@ -96,7 +96,7 @@ async function bootstrap() {
     optionsSuccessStatus: 200,
   });
 
-  const PORT = configService.get<number>('SERVER_PORT') || 5000;
+  const PORT = configService.get<number>('SERVER_PORT') || 3000;
 
   await app.listen(PORT);
 
