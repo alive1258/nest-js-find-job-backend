@@ -40,7 +40,7 @@ export class ServicesController {
   @RequirePermissions(Permission.SERVICES_CREATE)
   @UseGuards(JwtOrApiKeyGuard, PermissionsGuard)
   @UseInterceptors(FileInterceptor('image'))
-    @Throttle({ default: { limit: 20, ttl: 180 } })
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Post('create')
   create(
     @Req() req: Request,
@@ -56,7 +56,6 @@ export class ServicesController {
     response: ServiceResponseDto,
     status: HttpStatus.OK,
   })
-  @UseGuards(JwtOrApiKeyGuard, PermissionsGuard)
   @Get()
   findAll(@Query() query: GetServiceDto) {
     return this.servicesService.findAll(query);

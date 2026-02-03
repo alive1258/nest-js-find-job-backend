@@ -35,6 +35,13 @@ export enum Permission {
   BUSINESS_WC_DELETE = 'business-we-cover:delete',
   BUSINESS_WC_MANAGE = 'business-we-cover:*',
 
+  //   TRUSTED_COMPANIES_CREATE
+  TRUSTED_COMPANIES_CREATE = 'trusted-companies:create',
+  TRUSTED_COMPANIES_READ = 'trusted-companies:read',
+  TRUSTED_COMPANIES_UPDATE = 'trusted-companies:update',
+  TRUSTED_COMPANIES_DELETE = 'trusted-companies:delete',
+  TRUSTED_COMPANIES_MANAGE = 'trusted-companies:*',
+
   /* =========================
    Why Choose Us Management
 ========================= */

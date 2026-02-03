@@ -90,6 +90,12 @@ export const RoleBasedPermissions: Record<Role, Permission[]> = {
     Permission.SYSTEM_READ,
     Permission.SYSTEM_UPDATE,
     Permission.BULK_OPERATION,
+
+    Permission.TRUSTED_COMPANIES_CREATE,
+    Permission.TRUSTED_COMPANIES_READ,
+    Permission.TRUSTED_COMPANIES_UPDATE,
+    Permission.TRUSTED_COMPANIES_DELETE,
+    Permission.TRUSTED_COMPANIES_MANAGE,
   ],
 
   [Role.MANAGER]: [
