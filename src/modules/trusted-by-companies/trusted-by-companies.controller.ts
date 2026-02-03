@@ -11,6 +11,7 @@ import {
   UseInterceptors,
   Req,
   UploadedFile,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { TrustedByCompaniesService } from './trusted-by-companies.service';
 import { CreateTrustedByCompanyDto } from './dto/create-trusted-by-company.dto';
@@ -52,29 +53,56 @@ export class TrustedByCompaniesController {
     );
   }
 
+  @ApiDoc({
+    summary: 'Get all Trusted Companies',
+    description:
+      'Retrieve all trusted companies. Supports pagination and filters.',
+    status: HttpStatus.OK,
+  })
   @Get()
   findAll() {
     return this.trustedByCompaniesService.findAll();
   }
 
+  @ApiDoc({
+    summary: 'Get single Trusted Company',
+    description: 'Retrieve a single trusted company by UUID.',
+    status: HttpStatus.OK,
+  })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.trustedByCompaniesService.findOne(+id);
+    return this.trustedByCompaniesService.findOne(id);
   }
 
+  @ApiDoc({
+    summary: 'Update Trusted Company',
+    description:
+      'Updates an existing trusted company. Requires proper permission.',
+    status: HttpStatus.OK,
+  })
+  @RequirePermissions(Permission.TRUSTED_COMPANIES_UPDATE)
+  @UseGuards(JwtOrApiKeyGuard, PermissionsGuard)
+  @UseInterceptors(FileInterceptor('logo'))
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Patch(':id')
   update(
-    @Param('id') id: string,
-    @Body() updateTrustedByCompanyDto: UpdateTrustedByCompanyDto,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateDto: UpdateTrustedByCompanyDto,
+    @UploadedFile() file?: Express.Multer.File,
   ) {
-    return this.trustedByCompaniesService.update(
-      +id,
-      updateTrustedByCompanyDto,
-    );
+    return this.trustedByCompaniesService.update(id, updateDto, file);
   }
 
+  @ApiDoc({
+    summary: 'Delete Trusted Company',
+    description: 'Soft deletes a trusted company. Requires proper permission.',
+    status: HttpStatus.OK,
+  })
+  @RequirePermissions(Permission.TRUSTED_COMPANIES_DELETE)
+  @UseGuards(JwtOrApiKeyGuard, PermissionsGuard)
+  @Throttle({ default: { limit: 20, ttl: 180 } })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.trustedByCompaniesService.remove(+id);
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.trustedByCompaniesService.remove(id);
   }
 }
