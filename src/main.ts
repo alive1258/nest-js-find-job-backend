@@ -37,8 +37,8 @@ async function bootstrap() {
    * Swagger API documentation configuration:
    */
   const config = new DocumentBuilder()
-    .setTitle('Digital Product Backend Api')
-    .setDescription('Nest Digital Product Backend Api Documentation')
+    .setTitle('Find Job Backend Api')
+    .setDescription('Nest Find Job Backend Api Documentation')
     .addServer('http://localhost:5000/api/v1')
     .setTermsOfService('http://localhost:5000/api/v1/terms-of-conditions')
     .setVersion('1.0.0')
@@ -61,7 +61,7 @@ async function bootstrap() {
       tagsSorter: 'alpha',
       operationSorter: 'alpha',
     },
-    customSiteTitle: 'Digital Product Backend Api',
+    customSiteTitle: 'Find Job Backend Api',
   });
 
   // Global Intercerptor (for class-transformer)

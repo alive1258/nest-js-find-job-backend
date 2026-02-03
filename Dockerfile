@@ -7,8 +7,8 @@ WORKDIR /app
 # ৩. package.json এবং package-lock.json কপি করো
 COPY package*.json ./
 
-# ৪. ডিপেন্ডেন্সি ইনস্টল করো
-RUN npm install --production
+# ৪. devDependencies সহ install করো (build এর জন্য দরকার)
+RUN npm install
 
 # ৫. প্রজেক্ট ফাইল কপি করো
 COPY . .
@@ -16,11 +16,14 @@ COPY . .
 # ৬. NestJS build করো
 RUN npm run build
 
-# ৭. environment variables সেট (যদি প্রয়োজন হয়)
+# ৭. production-only deps পুনরায় install করো (optional)
+RUN npm prune --production
+
+# ৮. environment variables সেট (যদি প্রয়োজন হয়)
 ENV PORT=3000
 
-# ৮. কন্টেইনারে app চালানোর জন্য কমান্ড
+# ৯. কন্টেইনারে app চালানোর জন্য কমান্ড
 CMD ["node", "dist/main.js"]
 
-# ৯. যে পোর্টে সার্ভার চলবে তা expose করো
+# ১০. যে পোর্টে সার্ভার চলবে তা expose করো
 EXPOSE 3000
