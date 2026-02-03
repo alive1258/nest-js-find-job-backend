@@ -21,7 +21,7 @@
 
 ## 🚀 About the Project
 
-This project is a **DevJobs Backend API** built using **NestJS**, following **industry best practices**:
+This project is a **Find Jobs Backend API** built using **NestJS**, following **industry best practices**:
 
 -- This backend is built with enterprise-grade architecture, following clean code principles, SOLID design, and NestJS best practices to ensure:
 

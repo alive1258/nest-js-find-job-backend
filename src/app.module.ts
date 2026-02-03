@@ -26,6 +26,7 @@ import { ServicesModule } from './modules/services/services.module';
 import { PricingsModule } from './modules/pricings/pricings.module';
 import { PricingFeaturesModule } from './modules/pricing-features/pricing-features.module';
 import { FileUploadsModule } from './common/file-uploads/file-uploads.modules';
+import { TrustedByCompaniesModule } from './modules/trusted-by-companies/trusted-by-companies.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -75,6 +76,7 @@ const ENV = process.env.NODE_ENV;
     ServicesModule,
     PricingsModule,
     PricingFeaturesModule,
+    TrustedByCompaniesModule,
   ],
 
   controllers: [AppController],

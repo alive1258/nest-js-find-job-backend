@@ -13,7 +13,7 @@ export default registerAs('appConfig', () => ({
   awsCloudfrontUrl: process.env.AWS_CLOUDFRONT_URL,
   awsAccessKey: process.env.AWS_ACCESS_KEY_ID,
   awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  imageUploadUrl: process.env.IMAGE_UPLOAD_URL,
+  // imageUploadUrl: process.env.IMAGE_UPLOAD_URL,
   cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
   cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
   cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
