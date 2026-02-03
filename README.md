@@ -19,6 +19,8 @@
 
 ---
 
+## 🚀 [Api Documentation Swager](https://nest-js-find-job-backend.onrender.com/api/v1/swagger)
+
 ## 🚀 About the Project
 
 This project is a **Find Jobs Backend API** built using **NestJS**, following **industry best practices**:
@@ -60,6 +62,7 @@ Designed for **scalability**, **maintainability**, and **real-world usage**.
 - **Language:** TypeScript
 - **Database:** PostgreSQL
 - **ORM:** TypeORM
+- **Docker:** Docker
 - **Validation:** class-validator
 - **Documentation:** Swagger (OpenAPI)
 - **Authentication:** JWT (Access & Refresh Tokens)

@@ -1,17 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsNotEmpty,
-  IsString,
-  IsUUID,
-  IsNumber,
-  IsOptional,
-  IsUrl,
-  Min,
-  Max,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, IsUrl } from 'class-validator';
 
 export class CreateTrustedByCompanyDto {
-  /** Trusted company name */
   @ApiProperty({
     description: 'Name of the trusted company',
     example: 'Web Development',
@@ -20,7 +10,6 @@ export class CreateTrustedByCompanyDto {
   @IsNotEmpty()
   name: string;
 
-  /** Image URL */
   @ApiProperty({
     description: 'Service image URL',
     example: 'https://example.com/image.jpg',
