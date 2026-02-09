@@ -5,6 +5,7 @@ import { Role } from 'src/auth/enums/role-type.enum';
 export const RoleHierarchy: Record<Role, readonly Role[]> = {
   [Role.SUPER_ADMIN]: [Role.ADMIN],
   [Role.ADMIN]: [Role.MANAGER],
+  [Role.COMPANY]: [Role.COMPANY],
   [Role.MANAGER]: [Role.PREMIUM_USER],
   [Role.PREMIUM_USER]: [Role.USER],
   [Role.USER]: [],
@@ -117,6 +118,7 @@ export const RoleBasedPermissions: Record<Role, Permission[]> = {
     Permission.ANALYTICS_READ,
   ],
 
+  [Role.COMPANY]: [],
   [Role.PREMIUM_USER]: [
     Permission.CONTENT_READ,
     Permission.PRODUCT_READ,

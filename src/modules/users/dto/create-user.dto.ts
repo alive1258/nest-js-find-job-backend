@@ -1,28 +1,32 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsString,
   IsEmail,
-  IsNumber,
-  MaxLength,
-  MinLength,
-  IsNotEmpty,
-  Matches,
   IsBoolean,
   IsOptional,
+  IsUrl,
+  IsArray,
+  IsNotEmpty,
+  MinLength,
+  MaxLength,
+  Matches,
 } from 'class-validator';
 
 export class CreateUserDto {
+  /* =========================
+     BASIC INFO
+  ========================== */
+
   @ApiProperty({
     description: 'Full name of the user',
     example: 'John Doe',
-    required: false,
   })
   @IsString()
   @MaxLength(100)
   name: string;
 
   @ApiProperty({
-    description: 'Mobile number',
+    description: 'Mobile phone number',
     example: '017XXXXXXXX',
   })
   @IsString()
@@ -36,94 +40,240 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
+  @ApiProperty({
+    description: 'Strong account password',
+    example: 'P@ssw0rd123',
+  })
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
   @MaxLength(255)
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/, {
     message:
-      'Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, one number, and one special character',
+      'Password must contain uppercase, lowercase, number, and special character',
   })
   password: string;
 
-  @ApiProperty({
-    description: 'Division ID',
-    example: 1,
-    required: false,
-  })
-  @IsNumber()
-  division_id: number;
+  /* =========================
+     PROFILE INFO
+  ========================== */
 
-  @ApiProperty({
-    description: 'District ID',
-    example: 10,
-    required: false,
-  })
-  @IsNumber()
-  district_id: number;
-
-  @ApiProperty({
-    description: 'Upazila ID',
-    example: 101,
-    required: false,
-  })
-  @IsNumber()
-  upazila_id?: number;
-
-  @ApiProperty({
-    description: 'Address',
-    example: 'House 12, Road 5, Dhaka',
-    required: false,
+  @ApiPropertyOptional({
+    description: 'User designation or job title',
+    example: 'Software Engineer',
   })
   @IsString()
-  address: string;
+  @IsOptional()
+  designation?: string;
 
-  /**
-   * is_verified
-   */
+  @ApiPropertyOptional({
+    description: 'Short user biography',
+    example: 'Passionate full-stack developer',
+  })
+  @IsString()
+  @IsOptional()
+  bio?: string;
 
+  @ApiPropertyOptional({
+    description: 'Profile image URL',
+    example: 'https://example.com/profile.jpg',
+  })
+  @IsUrl()
+  @IsOptional()
+  image?: string;
+
+  /* =========================
+     LINKS & SOCIAL
+  ========================== */
+
+  @ApiPropertyOptional({
+    description: 'GitHub profile URL',
+    example: 'https://github.com/username',
+  })
+  @IsUrl()
+  @IsOptional()
+  github_link?: string;
+
+  @ApiPropertyOptional({
+    description: 'Portfolio website URL',
+    example: 'https://myportfolio.com',
+  })
+  @IsUrl()
+  @IsOptional()
+  portfolio_link?: string;
+
+  @ApiPropertyOptional({
+    description: 'Resume Google Drive link',
+    example: 'https://drive.google.com/file/d/xxxx',
+  })
+  @IsUrl()
+  @IsOptional()
+  resume_drive_link?: string;
+
+  @ApiPropertyOptional({
+    description: 'LinkedIn profile URL',
+    example: 'https://linkedin.com/in/username',
+  })
+  @IsUrl()
+  @IsOptional()
+  linkedin_account_link?: string;
+
+  /* =========================
+     SKILLS
+  ========================== */
+
+  @ApiPropertyOptional({
+    description: 'List of user skills',
+    type: [String],
+    example: ['HTML', 'CSS', 'UI/UX'],
+  })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  skills?: string[];
+
+  /* =========================
+     META
+  ========================== */
+
+  @ApiPropertyOptional({
+    description: 'User verification status',
+    example: false,
+  })
   @IsBoolean()
   @IsOptional()
   is_verified?: boolean;
 }
 
 export class UserResponseDto {
-  @ApiProperty({ example: 1 })
-  id: string;
+  /* =========================
+     IDENTIFIERS
+  ========================== */
 
-  @ApiProperty({ example: 'John Doe', required: false })
+  @ApiProperty({
+    description: 'Unique user ID',
+    example: 1,
+  })
+  id: number;
+
+  /* =========================
+     BASIC INFO
+  ========================== */
+
+  @ApiPropertyOptional({
+    description: 'Full name of the user',
+    example: 'John Doe',
+  })
   name?: string;
 
-  @ApiProperty({ example: '017XXXXXXXX' })
+  @ApiProperty({
+    description: 'Mobile phone number',
+    example: '017XXXXXXXX',
+  })
   mobile: string;
 
-  @ApiProperty({ example: 'john@example.com' })
+  @ApiProperty({
+    description: 'Email address',
+    example: 'john@example.com',
+  })
   email: string;
 
-  @ApiProperty({ example: 'user' })
+  /* =========================
+     PROFILE INFO
+  ========================== */
+
+  @ApiPropertyOptional({
+    description: 'User designation or job title',
+    example: 'Software Engineer',
+  })
+  designation?: string;
+
+  @ApiPropertyOptional({
+    description: 'Short user biography',
+    example: 'Passionate full-stack developer',
+  })
+  bio?: string;
+
+  @ApiPropertyOptional({
+    description: 'Profile image URL',
+    example: 'https://example.com/profile.jpg',
+  })
+  image?: string;
+
+  /* =========================
+     LINKS & SOCIAL
+  ========================== */
+
+  @ApiPropertyOptional({
+    description: 'GitHub profile URL',
+    example: 'https://github.com/username',
+  })
+  github_link?: string;
+
+  @ApiPropertyOptional({
+    description: 'Portfolio website URL',
+    example: 'https://myportfolio.com',
+  })
+  portfolio_link?: string;
+
+  @ApiPropertyOptional({
+    description: 'Resume Google Drive link',
+    example: 'https://drive.google.com/file/d/xxxx',
+  })
+  resume_drive_link?: string;
+
+  @ApiPropertyOptional({
+    description: 'LinkedIn profile URL',
+    example: 'https://linkedin.com/in/username',
+  })
+  linkedin_account_link?: string;
+
+  /* =========================
+     SKILLS
+  ========================== */
+
+  @ApiPropertyOptional({
+    description: 'List of user skills',
+    type: [String],
+    example: ['HTML', 'CSS', 'UI/UX'],
+  })
+  skills?: string[];
+
+  /* =========================
+     ACCOUNT META
+  ========================== */
+
+  @ApiProperty({
+    description: 'User role',
+    example: 'user',
+  })
   role: string;
 
-  @ApiProperty({ example: false })
+  @ApiProperty({
+    description: 'User verification status',
+    example: false,
+  })
   is_verified: boolean;
 
-  @ApiProperty({ example: '2025-01-01T00:00:00.000Z', required: false })
+  @ApiPropertyOptional({
+    description: 'Email verification timestamp',
+    example: '2025-01-01T00:00:00.000Z',
+  })
   email_verified_at?: Date;
 
-  @ApiProperty({ example: 'House 12, Road 5, Dhaka', required: false })
-  address?: string;
+  /* =========================
+     TIMESTAMPS
+  ========================== */
 
-  @ApiProperty({ example: 1, required: false })
-  division_id?: number;
-
-  @ApiProperty({ example: 10, required: false })
-  district_id?: number;
-
-  @ApiProperty({ example: 101, required: false })
-  upazila_id?: number;
-
-  @ApiProperty({ example: '2025-01-01T00:00:00.000Z' })
+  @ApiProperty({
+    description: 'Account creation timestamp',
+    example: '2025-01-01T00:00:00.000Z',
+  })
   created_at: Date;
 
-  @ApiProperty({ example: '2025-01-01T00:00:00.000Z' })
+  @ApiProperty({
+    description: 'Last account update timestamp',
+    example: '2025-01-01T00:00:00.000Z',
+  })
   updated_at: Date;
 }
