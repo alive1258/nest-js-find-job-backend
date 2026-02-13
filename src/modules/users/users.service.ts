@@ -65,9 +65,6 @@ export class UsersService {
         'mobile',
         'role',
         'is_verified',
-        'division_id',
-        'district_id',
-        'upazila_id',
         'created_at',
         'updated_at',
       ],
@@ -96,7 +93,7 @@ export class UsersService {
     return user;
   }
 
-    public async findOneForResendOTP(id: string): Promise<User> {
+  public async findOneForResendOTP(id: string): Promise<User> {
     // Validate the ID
     if (!id) {
       throw new BadRequestException('You have to provide User ID.');

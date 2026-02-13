@@ -1,4 +1,3 @@
-export class Mail {}
 import { Exclude } from 'class-transformer';
 import {
   Column,

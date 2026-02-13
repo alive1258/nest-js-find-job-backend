@@ -83,40 +83,23 @@ export class CreateUserDto {
   image?: string;
 
   /* =========================
-     LINKS & SOCIAL
-  ========================== */
+   LINKS & SOCIAL
+========================== */
 
   @ApiPropertyOptional({
-    description: 'GitHub profile URL',
-    example: 'https://github.com/username',
+    description: 'List of user social & portfolio links',
+    type: [String],
+    example: [
+      'https://github.com/username',
+      'https://myportfolio.com',
+      'https://drive.google.com/file/d/xxxx',
+      'https://linkedin.com/in/username',
+    ],
   })
-  @IsUrl()
+  @IsArray()
+  @IsString({ each: true })
   @IsOptional()
-  github_link?: string;
-
-  @ApiPropertyOptional({
-    description: 'Portfolio website URL',
-    example: 'https://myportfolio.com',
-  })
-  @IsUrl()
-  @IsOptional()
-  portfolio_link?: string;
-
-  @ApiPropertyOptional({
-    description: 'Resume Google Drive link',
-    example: 'https://drive.google.com/file/d/xxxx',
-  })
-  @IsUrl()
-  @IsOptional()
-  resume_drive_link?: string;
-
-  @ApiPropertyOptional({
-    description: 'LinkedIn profile URL',
-    example: 'https://linkedin.com/in/username',
-  })
-  @IsUrl()
-  @IsOptional()
-  linkedin_account_link?: string;
+  social_links?: string[];
 
   /* =========================
      SKILLS
@@ -205,28 +188,14 @@ export class UserResponseDto {
   ========================== */
 
   @ApiPropertyOptional({
-    description: 'GitHub profile URL',
-    example: 'https://github.com/username',
+    description: 'List of user social & portfolio links',
+    type: [String],
+    example: [
+      'https://github.com/username',
+      'https://linkedin.com/in/username',
+    ],
   })
-  github_link?: string;
-
-  @ApiPropertyOptional({
-    description: 'Portfolio website URL',
-    example: 'https://myportfolio.com',
-  })
-  portfolio_link?: string;
-
-  @ApiPropertyOptional({
-    description: 'Resume Google Drive link',
-    example: 'https://drive.google.com/file/d/xxxx',
-  })
-  resume_drive_link?: string;
-
-  @ApiPropertyOptional({
-    description: 'LinkedIn profile URL',
-    example: 'https://linkedin.com/in/username',
-  })
-  linkedin_account_link?: string;
+  social_links?: string[];
 
   /* =========================
      SKILLS

@@ -68,21 +68,12 @@ export class VerifyOTPProvider {
     // Mark verified
     void this.usersService.update(user.id, { is_verified: true });
 
-    //  Send welcome email
-    const tempPassword = 'GENERATED_TEMP_PASSWORD'; // wherever you create it
-
-    await this.mailService.sendWelcomeMail(user, tempPassword);
+    await this.mailService.sendWelcomeMail(user);
 
     // 7️⃣ Generate tokens
     const tokens = await this.generateTokensProvider.generateTokens(user);
     return {
       ...tokens,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role:user.role,
-      },
     };
   }
 }

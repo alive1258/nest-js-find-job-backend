@@ -79,12 +79,6 @@ export class RefreshTokensProvider {
       const result = await this.generateTokensProvider.generateTokens(user);
       return {
         ...result,
-        // user: {
-        //   id: user.id,
-        //   name: user.name,
-        //   email: user.email,
-        //   role: user.role,
-        // },
       };
     } catch {
       throw new UnauthorizedException('Refresh token invalid');
