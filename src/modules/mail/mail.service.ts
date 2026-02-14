@@ -32,26 +32,20 @@ export class MailService {
   public async sendOtp(
     user: User,
     entityManager?: EntityManager,
-  ): Promise<OTP> {
+  ): Promise<Omit<OTP, 'otp_code'>> {
     const manager = entityManager ?? this.userOTPRepository.manager;
     const otpCode = this.generateOtp();
 
     const hashedOTP = await bcrypt.hash(otpCode, 10);
 
     const otpEntity = manager.create(OTP, {
-      added_by: user.id,
+      added_by: user.id, // keep for internal tracking
       otp_code: hashedOTP,
       attempt: 1,
       expire_at: new Date(Date.now() + this.OTP_TTL_MS),
     });
 
-    try {
-      await manager.save(OTP, otpEntity);
-    } catch (error) {
-      throw new RequestTimeoutException(error, {
-        description: 'Could not save OTP data',
-      });
-    }
+    await manager.save(OTP, otpEntity);
 
     await this.sendEmail({
       to: user.email,
@@ -59,7 +53,9 @@ export class MailService {
       html: OtpTemplate(otpCode),
     });
 
-    return otpEntity;
+    // return safe response without otp_code
+    const { otp_code, ...safeOtp } = otpEntity;
+    return safeOtp;
   }
 
   public async resendOtp(user: User, expireTime: number): Promise<OTP> {
@@ -120,15 +116,13 @@ export class MailService {
 
   /** ------------------- Welcome ------------------- */
 
-  public async sendWelcomeMail(user: User, setupUrl: string): Promise<void> {
+  public async sendWelcomeMail(user: User): Promise<void> {
     await this.sendEmail({
       to: user.email,
       subject: 'Welcome!',
       html: WelcomeEmailTemplate({
         email: user.email,
-        password: 'Set your password using the link below',
         companyName: this.COMPANY_NAME,
-        loginUrl: setupUrl,
         supportEmail: this.SUPPORT_EMAIL,
         userName: user.name ?? 'User',
       }),

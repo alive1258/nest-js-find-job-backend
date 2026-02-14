@@ -27,6 +27,10 @@ import { PricingsModule } from './modules/pricings/pricings.module';
 import { PricingFeaturesModule } from './modules/pricing-features/pricing-features.module';
 import { FileUploadsModule } from './common/file-uploads/file-uploads.modules';
 import { TrustedByCompaniesModule } from './modules/trusted-by-companies/trusted-by-companies.module';
+import { UserExpriencesModule } from './modules/user-expriences/user-expriences.module';
+import { UserCertificationsModule } from './modules/user-certifications/user-certifications.module';
+import { UserProjectsModule } from './modules/user-projects/user-projects.module';
+import { UserEducationsModule } from './modules/user-educations/user-educations.module';
 
 const ENV = process.env.NODE_ENV;
 
@@ -77,6 +81,10 @@ const ENV = process.env.NODE_ENV;
     PricingsModule,
     PricingFeaturesModule,
     TrustedByCompaniesModule,
+    UserExpriencesModule,
+    UserCertificationsModule,
+    UserProjectsModule,
+    UserEducationsModule,
   ],
 
   controllers: [AppController],

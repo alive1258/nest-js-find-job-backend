@@ -10,34 +10,50 @@ import {
 
 @Entity({ name: 'users' })
 export class User {
-  /**
-   * Primary key
-   */
+  /* =========================
+     IDENTIFIERS
+  ========================== */
+
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  /**
-   * Name
-   */
+  /* =========================
+     BASIC INFO
+  ========================== */
+
   @Column({ type: 'varchar', length: 100, nullable: true })
   name?: string;
 
-  /**
-   * Mobile
-   */
   @Column({ type: 'varchar', length: 15, nullable: false })
   mobile: string;
 
-  /**
-   * Email
-   */
   @Index({ unique: true })
   @Column({ type: 'varchar', length: 255, nullable: false })
   email: string;
 
-  /**
-   * User Role (admin / user / moderator)
-   */
+  /* =========================
+     PROFILE INFO
+  ========================== */
+
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  designation?: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  bio?: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  image?: string;
+
+  @Column({ type: 'simple-array', nullable: true })
+  social_links?: string[];
+
+  @Column({ type: 'simple-array', nullable: true })
+  skills?: string[]; // stores array as comma-separated values
+
+  /* =========================
+     ACCOUNT INFO
+  ========================== */
+
   @Column({ type: 'varchar', length: 50, default: 'user' })
   role: string;
 
@@ -47,64 +63,35 @@ export class User {
   @Column({ type: 'boolean', default: false })
   has_refresh_token: boolean;
 
-
-  /**
-   * Is Account Verified
-   */
   @Column({ type: 'boolean', default: false })
   is_verified: boolean;
 
-  /**
-   * Password
-   */
+  /* =========================
+     SECURITY
+  ========================== */
 
   @Column({ type: 'varchar', nullable: false })
   @Exclude()
   password: string;
 
-  /**
-   * Remember Token
-   */
   @Column({ type: 'varchar', nullable: true })
   @Exclude()
   remember_token?: string;
 
-  /**
-   * Division ID (FK)
-   */
-  @Index()
-  @Column({ type: 'int', nullable: true })
-  division_id?: number;
+  /* =========================
+     LOCATION / ADDRESS
+  ========================== */
 
-  /**
-   * District ID (FK)
-   */
-  @Index()
-  @Column({ type: 'int', nullable: true })
-  district_id?: number;
-
-  /**
-   * upzela_id
-   */
-  @Index()
-  @Column({ type: 'int', nullable: true })
-  upazila_id?: number;
-
-  /**
-   * Address
-   */
   @Column({ type: 'varchar', length: 255, nullable: true })
   address?: string;
 
-  /**
-   * Created At
-   */
+  /* =========================
+     TIMESTAMPS
+  ========================== */
+
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 
-  /**
-   * Updated At
-   */
   @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
 }

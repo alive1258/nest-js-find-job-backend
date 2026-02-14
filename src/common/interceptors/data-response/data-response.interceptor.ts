@@ -48,11 +48,11 @@ export class DataResponseInterceptor<
       });
     };
 
-    const actionMessage = (request: Request, data: any) => {
+    const defaultActionMessage = (request: Request, data: any) => {
       const method = request.method;
       const path = request.path.toLowerCase();
 
-      if (method === 'POST') return `Created successfully`;
+      if (method === 'POST') return `Operation successfully`;
       if (method === 'PUT' || method === 'PATCH') return `Updated successfully`;
       if (method === 'DELETE') return `Deleted successfully`;
       if (method === 'GET' && Array.isArray(data?.data))
@@ -161,7 +161,7 @@ export class DataResponseInterceptor<
           return {
             apiVersion,
             success: true,
-            message: 'Operation Successful',
+            message: data?.message ?? 'Operation Successful',
             status: HttpStatus.OK,
             meta,
             links,
@@ -176,12 +176,11 @@ export class DataResponseInterceptor<
             ? generateLinks(data, request)
             : undefined;
 
-        const message = actionMessage(request, data);
+        const message = data?.message ?? defaultActionMessage(request, data);
         return {
           apiVersion,
           success: true,
           message,
-          // message: data.message ?? 'Operation Successful',
           status: HttpStatus.OK,
           data: data,
           links,
