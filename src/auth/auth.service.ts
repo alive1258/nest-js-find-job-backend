@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { SignInDto } from './dto/signin.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -16,6 +17,7 @@ import { HashingProvider } from './providers/hashing.provider';
 import { UserOTPDto } from './dto/user-otp.dto';
 import { OtpResponse } from './response';
 import { Request } from 'express';
+import { ResetPasswordDto } from './dto/reset-password.dtos';
 
 @Injectable()
 export class AuthService {
@@ -61,13 +63,11 @@ export class AuthService {
 
   public async resendOTP(
     email: string,
-    expireTime: number = 5 * 60 * 1000,
+    expireTime: number = 2 * 60 * 1000,
   ): Promise<OtpResponse> {
     const user = await this.usersService.findOneByEmail(email);
 
     if (!user) throw new BadRequestException('User not found.');
-    if (user.is_verified)
-      throw new BadRequestException('User is already verified.');
 
     await this.mailService.resendOtp(user, expireTime);
 
@@ -90,6 +90,65 @@ export class AuthService {
 
     return {
       user: result?.user,
+    };
+  }
+
+  // reset password
+  public async changePassword(
+    userId: string,
+    resetPasswordDto: ResetPasswordDto,
+  ) {
+    const { old_password, new_password, confirm_password } = resetPasswordDto;
+
+    // 1. Find user WITH password
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      select: ['id', 'password'], // IMPORTANT
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // 2. Compare old password
+    const isMatch = await this.hashingProvider.comparePassword(
+      old_password,
+      user.password,
+    );
+
+    if (!isMatch) {
+      throw new UnauthorizedException('Old password is incorrect');
+    }
+
+    // 3. New password match check
+    if (new_password !== confirm_password) {
+      throw new BadRequestException(
+        'New password and confirm password do not match',
+      );
+    }
+
+    // 4. Prevent same password reuse (industry standard)
+    const isSame = await this.hashingProvider.comparePassword(
+      new_password,
+      user.password,
+    );
+
+    if (isSame) {
+      throw new BadRequestException(
+        'New password cannot be the same as old password',
+      );
+    }
+
+    // 5. Hash new password
+    const hashedPassword =
+      await this.hashingProvider.hashPassword(new_password);
+
+    user.password = hashedPassword;
+
+    await this.usersRepository.save(user);
+
+    return {
+      message: 'Password changed successfully',
     };
   }
 

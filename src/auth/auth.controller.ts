@@ -28,6 +28,7 @@ import { ResendOtpDto } from './dto/resend-otp.dto';
 import { RefreshTokenGuard } from './guards/refresh-token.guard';
 import { Throttle } from '@nestjs/throttler';
 import { ForgetPasswordOtpDto } from './dto/forget-password-otp.dto';
+import { ResetPasswordDto } from './dto/reset-password.dtos';
 
 @ApiTags('Authentication')
 @Controller({
@@ -86,6 +87,25 @@ export class AuthController {
   }
 
   /**
+   * reset password or Change Password (Logged In User)
+   */
+  @ApiDoc({
+    summary: 'Change Password',
+    description: 'Allows logged-in user to change account password',
+    status: HttpStatus.OK,
+  })
+  @Post('reset-password')
+  @UseGuards(JwtOrApiKeyGuard)
+  @HttpCode(HttpStatus.OK)
+  @Auth(AuthType.Bearer)
+  public async changePassword(
+    @Req() req: Request & { user: { id: string } },
+    @Body() resetPasswordDto: ResetPasswordDto,
+  ) {
+    return this.authService.changePassword(req.user.id, resetPasswordDto);
+  }
+
+  /**
    *forget password Resend OTP controller
    */
   @ApiDoc({
@@ -95,7 +115,6 @@ export class AuthController {
     status: HttpStatus.OK,
   })
   @Throttle({ default: { limit: 3, ttl: 60 * 60 } }) // per 24 hours an user can try 3 times
-  
   @Post('forget-password/resend-otp')
   public async resendOTPForForgetPassword(
     @Body() dto: ForgetPasswordOtpDto,
